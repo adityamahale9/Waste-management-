@@ -1,0 +1,292 @@
+:root {
+    /* Eco-friendly color palette */
+    --eco-green-dark: #2c5f2d;
+    --eco-green: #4ca950;
+    --eco-green-light: #97db9a;
+    --eco-blue: #2a9d8f;
+    --eco-blue-light: #83d1c4;
+    --eco-yellow: #e9c46a;
+    --eco-orange: #f4a261;
+    --eco-red: #e76f51;
+}
+
+/* General Styles */
+body {
+    padding-top: 56px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.content-wrapper {
+    flex: 1;
+}
+
+/* Custom Header Styling */
+.navbar {
+    background-color: var(--eco-green-dark) !important;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand i {
+    margin-right: 10px;
+    color: var(--eco-green-light);
+}
+
+/* Hero Section */
+.hero-section {
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1611284446314-60a58ac0deb9');
+    background-size: cover;
+    background-position: center;
+    color: white;
+    text-align: center;
+    padding: 100px 0;
+    margin-bottom: 40px;
+}
+
+.hero-section h1 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.hero-section p {
+    font-size: 1.25rem;
+    max-width: 700px;
+    margin: 0 auto 30px;
+}
+
+/* Feature Cards */
+.feature-card {
+    border: none;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 100%;
+    background-color: var(--bs-dark);
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.feature-card .card-img-top {
+    height: 200px;
+    object-fit: cover;
+}
+
+.feature-card .card-body {
+    padding: 1.5rem;
+}
+
+.feature-card .card-title {
+    color: var(--eco-green);
+    font-weight: bold;
+}
+
+.feature-card .card-icon {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    color: var(--eco-green);
+}
+
+/* Upload Form */
+.upload-section {
+    background-color: var(--bs-dark);
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 40px;
+}
+
+.upload-preview-container {
+    width: 100%;
+    height: 300px;
+    border: 2px dashed var(--eco-green);
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.upload-preview {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+.upload-icon {
+    font-size: 3rem;
+    color: var(--eco-green);
+}
+
+.upload-btn {
+    background-color: var(--eco-green);
+    border-color: var(--eco-green);
+}
+
+.upload-btn:hover {
+    background-color: var(--eco-green-dark);
+    border-color: var(--eco-green-dark);
+}
+
+/* Results Section */
+.result-container {
+    background-color: var(--bs-dark);
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 40px;
+}
+
+.result-image {
+    max-width: 100%;
+    max-height: 300px;
+    object-fit: contain;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.waste-type-badge {
+    font-size: 1.25rem;
+    padding: 10px 20px;
+    margin-bottom: 20px;
+    background-color: var(--eco-green);
+    color: white;
+}
+
+.confidence-badge {
+    font-size: 1rem;
+    padding: 5px 15px;
+    background-color: var(--eco-blue);
+    color: white;
+}
+
+/* Webcam Section */
+.webcam-container {
+    position: relative;
+    width: 100%;
+    max-width: 640px;
+    margin: 0 auto 20px;
+}
+
+.webcam-video, .webcam-preview {
+    width: 100%;
+    border-radius: 10px;
+    background-color: #000;
+}
+
+.webcam-controls {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+/* Map Container */
+.map-container {
+    width: 100%;
+    height: 500px;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 40px;
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+    text-align: center;
+    padding: 40px;
+}
+
+.spinner-grow {
+    width: 3rem;
+    height: 3rem;
+    color: var(--eco-green);
+}
+
+/* History Section */
+.history-card {
+    margin-bottom: 20px;
+}
+
+.history-image {
+    height: 180px;
+    object-fit: cover;
+}
+
+/* Footer */
+.footer {
+    background-color: var(--bs-dark);
+    padding: 30px 0;
+    margin-top: auto;
+}
+
+.footer-links a {
+    color: var(--eco-green-light);
+    margin: 0 10px;
+    text-decoration: none;
+}
+
+.footer-links a:hover {
+    color: var(--eco-green);
+    text-decoration: underline;
+}
+
+/* Google Maps Info Window */
+.gm-style .gm-style-iw-c {
+    padding: 12px !important;
+}
+
+.info-window h5 {
+    margin-bottom: 10px;
+    color: var(--eco-green-dark);
+}
+
+.info-window p {
+    margin-bottom: 5px;
+}
+
+.info-window a {
+    color: var(--eco-blue);
+    text-decoration: none;
+}
+
+.info-window a:hover {
+    text-decoration: underline;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .hero-section {
+        padding: 60px 0;
+    }
+    
+    .hero-section h1 {
+        font-size: 2rem;
+    }
+    
+    .hero-section p {
+        font-size: 1rem;
+    }
+    
+    .upload-preview-container,
+    .webcam-container {
+        height: 250px;
+    }
+    
+    .map-container {
+        height: 350px;
+    }
+}
