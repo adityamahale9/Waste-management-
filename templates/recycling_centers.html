@@ -1,0 +1,214 @@
+{% extends "layout.html" %}
+
+{% block title %}EcoScan - Nearby Recycling Centers{% endblock %}
+
+{% block content %}
+<!-- Header Section -->
+<section class="container my-5">
+    <h1>Nearby Recycling Centers</h1>
+    <p class="lead">Find recycling centers close to your location where you can properly dispose of your waste materials.</p>
+</section>
+
+<!-- Map Section -->
+<section class="container mb-5">
+    <div class="card">
+        <div class="card-body">
+            <div class="map-container">
+                <div id="map"></div>
+            </div>
+            <div class="mt-3">
+                <p><i class="fas fa-info-circle"></i> The map shows recycling centers near your location. Click on a marker to view details about the center.</p>
+                <p><i class="fas fa-map-marker-alt text-success"></i> <strong>Green markers:</strong> Recycling centers</p>
+                <p><i class="fas fa-circle text-primary"></i> <strong>Blue circle:</strong> Your current location (if location access is granted)</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Centers List Section -->
+<section class="container mb-5">
+    <h2>Recycling Centers Directory</h2>
+    <div class="row centers-list">
+        <!-- Centers will be loaded here via JavaScript -->
+        <div class="col-12 text-center py-5" id="centers-loading">
+            <div class="spinner-border text-success" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+            <p class="mt-3">Loading recycling centers...</p>
+        </div>
+    </div>
+</section>
+
+<!-- Materials Guide -->
+<section class="container mb-5">
+    <h2>Materials Recycling Guide</h2>
+    <div class="row g-4">
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-success"><i class="fas fa-wine-bottle"></i> Glass</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Clean bottles and jars</li>
+                        <li class="list-group-item">Remove lids and caps</li>
+                        <li class="list-group-item">Separate by color if required</li>
+                        <li class="list-group-item">Avoid windows, mirrors, ceramics</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-success"><i class="fas fa-newspaper"></i> Paper</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Newspapers, magazines, catalogs</li>
+                        <li class="list-group-item">Office paper and mail</li>
+                        <li class="list-group-item">Paperboard and cardboard boxes</li>
+                        <li class="list-group-item">Keep dry and clean</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-success"><i class="fas fa-water"></i> Plastic</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Check recycling numbers (1-7)</li>
+                        <li class="list-group-item">Rinse containers thoroughly</li>
+                        <li class="list-group-item">Flatten to save space</li>
+                        <li class="list-group-item">Avoid plastic bags (recycle separately)</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-success"><i class="fas fa-bolt"></i> Electronics</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Computers, phones, TVs</li>
+                        <li class="list-group-item">Batteries and chargers</li>
+                        <li class="list-group-item">Small appliances</li>
+                        <li class="list-group-item">Often require special drop-off</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-success"><i class="fas fa-apple-alt"></i> Organic</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Food scraps and yard waste</li>
+                        <li class="list-group-item">Coffee grounds and filters</li>
+                        <li class="list-group-item">Paper towels and napkins</li>
+                        <li class="list-group-item">Suitable for composting</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title text-success"><i class="fas fa-trash"></i> Hazardous</h5>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">Paint and solvents</li>
+                        <li class="list-group-item">Chemicals and pesticides</li>
+                        <li class="list-group-item">Motor oil and automotive fluids</li>
+                        <li class="list-group-item">Requires special disposal facilities</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<!-- Google Maps JS -->
+<script src="{{ url_for('static', filename='js/maps.js') }}"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Load recycling centers for list display
+    fetch('/api/recycling-centers')
+        .then(response => response.json())
+        .then(data => {
+            const centersList = document.querySelector('.centers-list');
+            const loadingEl = document.getElementById('centers-loading');
+            
+            // Remove loading indicator
+            if (loadingEl) {
+                loadingEl.remove();
+            }
+            
+            // Add centers to the list
+            data.centers.forEach(center => {
+                const centerCard = document.createElement('div');
+                centerCard.className = 'col-md-6 col-lg-4 mb-4';
+                centerCard.innerHTML = `
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">${center.name}</h5>
+                            <p class="card-text">
+                                <i class="fas fa-map-marker-alt text-success"></i> ${center.address}<br>
+                                ${center.phone ? `<i class="fas fa-phone"></i> ${center.phone}<br>` : ''}
+                                <i class="fas fa-recycle"></i> <strong>Materials:</strong> ${center.materials || 'Various materials'}
+                            </p>
+                            <div class="d-grid gap-2">
+                                <a href="https://www.google.com/maps/dir/?api=1&destination=${center.latitude},${center.longitude}" 
+                                   class="btn btn-outline-success" target="_blank">
+                                    <i class="fas fa-directions"></i> Get Directions
+                                </a>
+                                ${center.website ? 
+                                    `<a href="${center.website}" class="btn btn-outline-primary" target="_blank">
+                                        <i class="fas fa-globe"></i> Visit Website
+                                     </a>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                centersList.appendChild(centerCard);
+            });
+            
+            // If no centers found
+            if (data.centers.length === 0) {
+                const noResults = document.createElement('div');
+                noResults.className = 'col-12 text-center py-5';
+                noResults.innerHTML = `
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle fa-2x mb-3"></i>
+                        <h4>No recycling centers found</h4>
+                        <p>We couldn't find any recycling centers in your area. Please try again later or expand your search area.</p>
+                    </div>
+                `;
+                centersList.appendChild(noResults);
+            }
+        })
+        .catch(error => {
+            console.error('Error loading recycling centers:', error);
+            
+            const centersList = document.querySelector('.centers-list');
+            const loadingEl = document.getElementById('centers-loading');
+            
+            // Remove loading indicator
+            if (loadingEl) {
+                loadingEl.remove();
+            }
+            
+            // Show error message
+            const errorMsg = document.createElement('div');
+            errorMsg.className = 'col-12 text-center py-5';
+            errorMsg.innerHTML = `
+                <div class="alert alert-danger">
+                    <i class="fas fa-exclamation-triangle fa-2x mb-3"></i>
+                    <h4>Error Loading Data</h4>
+                    <p>We couldn't load the recycling centers data. Please try again later.</p>
+                </div>
+            `;
+            centersList.appendChild(errorMsg);
+        });
+});
+</script>
+{% endblock %}
